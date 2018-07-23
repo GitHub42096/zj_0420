@@ -1,0 +1,190 @@
+package utils;
+
+import java.io.*;
+import java.util.*;
+
+public class FileReAndWrUtil {
+
+    /**
+     * 读取文件
+     * @param file
+     * @return
+     */
+    public static Set<String> readFile(File file){
+        Set<String> set = new HashSet<String>();
+        FileInputStream fileInputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            inputStreamReader = new InputStreamReader(fileInputStream,"UTF-8");
+            bufferedReader = new BufferedReader(inputStreamReader);
+            String data = null;
+            while ((data = bufferedReader.readLine()) != null){
+                set.add(data);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                bufferedReader.close();
+                inputStreamReader.close();
+                fileInputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return set;
+    }
+
+    /**
+     * 写出文件
+     * @param file
+     * @param set
+     */
+    public static void writeFile(File file, Set<String> set){
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter(file);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            Iterator<String> iterator = set.iterator();
+            while (iterator.hasNext()){
+                String str = iterator.next();
+                bufferedWriter.write(str);
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                bufferedWriter.close();
+                fileWriter.close();
+            }
+             catch (IOException e) {
+                e.printStackTrace();
+             }
+        }
+    }
+
+    /**
+     * 递归查找文件
+     * @param baseDirName  查找的文件夹路径
+     * @param targetFileName  需要查找的文件名 : 为空则查找所有文件
+     * @param fileList  查找到的文件集合
+     */
+    public static void findFiles(String baseDirName, String targetFileName, List fileList) {
+
+        File baseDir = new File(baseDirName);		// 创建一个File对象
+        if (!baseDir.exists() || !baseDir.isDirectory()) {	// 判断目录是否存在
+            System.out.println("文件查找失败：" + baseDirName + "不是一个目录！");
+        }
+        String tempName = null;
+        //判断目录是否存在
+        File tempFile;
+        File[] files = baseDir.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            tempFile = files[i];
+            if(tempFile.isDirectory()){
+                findFiles(tempFile.getAbsolutePath(), targetFileName, fileList);
+            }else if(tempFile.isFile()){
+                tempName = tempFile.getName();
+                if (targetFileName == null || targetFileName.equals("")){
+                    fileList.add(tempFile.getAbsoluteFile().getPath());
+                }else {
+                    if(wildcardMatch(targetFileName, tempName)){
+                        // 匹配成功，将文件名添加到结果集
+                        fileList.add(tempFile.getAbsoluteFile().getPath());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 通配符匹配
+     * @param pattern    通配符模式
+     * @param str    待匹配的字符串
+     * @return    匹配成功则返回true，否则返回false
+     */
+    private static boolean wildcardMatch(String pattern, String str) {
+        int patternLength = pattern.length();
+        int strLength = str.length();
+        int strIndex = 0;
+        char ch;
+        for (int patternIndex = 0; patternIndex < patternLength; patternIndex++) {
+            ch = pattern.charAt(patternIndex);
+            if (ch == '*') {
+                //通配符星号*表示可以匹配任意多个字符
+                while (strIndex < strLength) {
+                    if (wildcardMatch(pattern.substring(patternIndex + 1),
+                            str.substring(strIndex))) {
+                        return true;
+                    }
+                    strIndex++;
+                }
+            } else if (ch == '?') {
+                //通配符问号?表示匹配任意一个字符
+                strIndex++;
+                if (strIndex > strLength) {
+                    //表示str中已经没有字符匹配?了。
+                    return false;
+                }
+            } else {
+                if ((strIndex >= strLength) || (ch != str.charAt(strIndex))) {
+                    return false;
+                }
+                strIndex++;
+            }
+        }
+        return (strIndex == strLength);
+    }
+
+    public static void main(String[] args){
+//        Set<String> set = FileReAndWrUtil.readFile(new File("C:\\Users\\Administrator\\Desktop\\201505.CSV"));
+//        System.out.println(set.size());
+//        Iterator<String> iterator = set.iterator();
+//        while (iterator.hasNext()) {
+//            String getOneLine = iterator.next();
+//            //System.out.println(getOneLine);
+//            String[] getOneLineAttr = getOneLine.split(",");
+//            //Integer pay_id = Integer.valueOf(getOneLine.substring(0, 5));
+////            String[] s = getOneLineAttr[2].split("P");
+////            System.out.println(s[0].replace("\"", ""));
+//            if (getOneLine.contains("STATUS")){
+//                System.out.println(getOneLine);
+//                String[] s = getOneLineAttr[2].split("P");
+//                System.out.println(s[0].replace("\"", ""));
+//            }
+//        }
+//        System.out.println(set.size());
+
+
+        String path = "C:\\Users\\Administrator\\Documents\\Tencent Files\\420964597\\FileRecv\\gash后台订单明细2015.5-2018.7\\7.19";
+        String fileNameSuffix = "*.CSV"; //可为空
+
+        File file = new File(path);
+        if (file.isDirectory()){
+            List<String> resultList = new ArrayList();
+            findFiles(path, fileNameSuffix, resultList);
+            if (resultList.size() == 0) {
+                System.out.println("No File Fount.");
+            } else {
+                System.out.println("fileCount: "+resultList.size());
+                for (int i = 0; i < resultList.size(); i++) {
+                    System.out.println(resultList.get(i));//显示查找结果。
+                }
+            }
+        }else if (file.isFile()){
+            System.out.println("文件");
+        }
+
+
+    }
+
+
+
+}

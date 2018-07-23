@@ -8,7 +8,7 @@ import java.util.Properties;
 public class MainSendToEnterprice {
 
     public static String myEmailAccount = "jie.zhang@yingxiong.com";
-    public static String myEmailPassword = "Zj420964597";
+    public static String myEmailPassword = "********";
     public static String myEmailSMTPHost = "smtp.exmail.qq.com";
     public static String receiveMailAccount = "junhong.lin@yingxiong.com";
 
