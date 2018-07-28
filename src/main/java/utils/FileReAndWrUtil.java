@@ -144,23 +144,14 @@ public class FileReAndWrUtil {
     }
 
     public static void main(String[] args){
-//        Set<String> set = FileReAndWrUtil.readFile(new File("C:\\Users\\Administrator\\Desktop\\201505.CSV"));
-//        System.out.println(set.size());
-//        Iterator<String> iterator = set.iterator();
-//        while (iterator.hasNext()) {
-//            String getOneLine = iterator.next();
-//            //System.out.println(getOneLine);
-//            String[] getOneLineAttr = getOneLine.split(",");
-//            //Integer pay_id = Integer.valueOf(getOneLine.substring(0, 5));
-////            String[] s = getOneLineAttr[2].split("P");
-////            System.out.println(s[0].replace("\"", ""));
-//            if (getOneLine.contains("STATUS")){
-//                System.out.println(getOneLine);
-//                String[] s = getOneLineAttr[2].split("P");
-//                System.out.println(s[0].replace("\"", ""));
-//            }
-//        }
-//        System.out.println(set.size());
+        Set<String> set = FileReAndWrUtil.readFile(new File("C:\\Users\\Administrator\\Desktop\\201505.CSV"));
+        System.out.println(set.size());
+        Iterator<String> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            String getOneLine = iterator.next();
+            System.out.println(getOneLine);
+        }
+        System.out.println(set.size());
 
 
         String path = "C:\\Users\\Administrator\\Documents\\Tencent Files\\420964597\\FileRecv\\gash后台订单明细2015.5-2018.7\\7.19";

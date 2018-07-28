@@ -1,4 +1,7 @@
-package utils;
+package utils.mailUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -11,10 +14,9 @@ import java.io.File;
 import java.util.Date;
 import java.util.Properties;
 
-//import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-
 public class EmailUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(EmailUtil.class);
     protected Session session;
 
     /**
@@ -169,16 +171,16 @@ public class EmailUtil {
         try{
             Transport transport = session.getTransport();
             transport.connect(sendAccount, sendPassword);
-           System.out.println("开始发送邮件····");
+            log.info("开始发送邮件····");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-            System.out.println("邮件发送成功！ 发送者：" + sendAccount + ";接受者：" + receiver);
+            log.info("邮件发送成功！ 发送者：" + sendAccount + ";接受者：" + receiver);
             return true;
         } catch (NoSuchProviderException e) {
-            System.out.println("邮件发送失败！发送者：" + sendAccount + ";接受者：" + receiver + e);
+            log.error("邮件发送失败！发送者：" + sendAccount + ";接受者：" + receiver + e);
             e.printStackTrace();
         } catch (MessagingException e) {
-            System.out.println("邮件发送失败！发送者：" + sendAccount + ";接受者：" + receiver + e);
+            log.error("邮件发送失败！发送者：" + sendAccount + ";接受者：" + receiver + e);
             e.printStackTrace();
         }
         return false;
@@ -205,7 +207,7 @@ public class EmailUtil {
 //             EmailUtil emailUtil=new EmailUtil();
 //             Properties properties = EmailUtil.getEmailProperties();
 //             properties = EmailUtil.setSMTP_sel(properties, "qq.com");
-//             MimeMessage message = EmailUtil.createMimeMessage(emailUtil.initSession(properties), "这是主题", "这是内容", "420964597@qq.com", "张杰","158571894*@qq.com", "a");
+//             MimeMessage message = EmailUtil.createMimeMessage(emailUtil.initSession(properties), "这是主题", "这是内容", "420964597@qq.com", "张杰","1585718943@qq.com", "a");
 //             boolean flag = emailUtil.send(message, "420964597@qq.com", "这里输入密码", "");
 //             if (flag){
 //                 log.info("邮件发送成功！");
