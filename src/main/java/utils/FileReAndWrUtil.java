@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.*;
+import java.lang.annotation.Repeatable;
 import java.util.*;
 
 public class FileReAndWrUtil {
@@ -8,16 +9,17 @@ public class FileReAndWrUtil {
     /**
      * 读取文件
      * @param file
+     * @param charsetName "UTF-8" "GBK" ````
      * @return
      */
-    public static Set<String> readFile(File file){
+    public static Set<String> readFile(File file, String charsetName){
         Set<String> set = new HashSet<String>();
         FileInputStream fileInputStream = null;
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
         try {
             fileInputStream = new FileInputStream(file);
-            inputStreamReader = new InputStreamReader(fileInputStream,"UTF-8");
+            inputStreamReader = new InputStreamReader(fileInputStream, charsetName);
             bufferedReader = new BufferedReader(inputStreamReader);
             String data = null;
             while ((data = bufferedReader.readLine()) != null){
@@ -38,6 +40,42 @@ public class FileReAndWrUtil {
         }
         return set;
     }
+
+    /**
+     * 读取文件返回List
+     * @param file
+     * @param charsetName "UTF-8" "GBK" ````
+     * @return
+     */
+    public static List<String> readFileRetList(File file, String charsetName){
+        List<String> list = new LinkedList<String>();
+        FileInputStream fileInputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            inputStreamReader = new InputStreamReader(fileInputStream, charsetName);
+            bufferedReader = new BufferedReader(inputStreamReader);
+            String data = null;
+            while ((data = bufferedReader.readLine()) != null){
+                list.add(data);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                bufferedReader.close();
+                inputStreamReader.close();
+                fileInputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
 
     /**
      * 写出文件
@@ -144,35 +182,45 @@ public class FileReAndWrUtil {
     }
 
     public static void main(String[] args){
-        Set<String> set = FileReAndWrUtil.readFile(new File("C:\\Users\\Administrator\\Desktop\\201505.CSV"));
-        System.out.println(set.size());
-        Iterator<String> iterator = set.iterator();
-        while (iterator.hasNext()) {
-            String getOneLine = iterator.next();
-            System.out.println(getOneLine);
-        }
-        System.out.println(set.size());
+
+//        // 读取文本文件
+//        Set<String> set = FileReAndWrUtil.readFile(new File("C:\\Users\\Administrator\\Desktop\\201505.CSV"), "UTF-8");
+//        System.out.println(set.size());
+//        Iterator<String> iterator = set.iterator();
+//        while (iterator.hasNext()) {
+//            String getOneLine = iterator.next();
+//            System.out.println(getOneLine);
+//        }
+//        System.out.println(set.size());
 
 
-        String path = "C:\\Users\\Administrator\\Documents\\Tencent Files\\420964597\\FileRecv\\gash后台订单明细2015.5-2018.7\\7.19";
-        String fileNameSuffix = "*.CSV"; //可为空
-
-        File file = new File(path);
-        if (file.isDirectory()){
-            List<String> resultList = new ArrayList();
-            findFiles(path, fileNameSuffix, resultList);
-            if (resultList.size() == 0) {
-                System.out.println("No File Fount.");
-            } else {
-                System.out.println("fileCount: "+resultList.size());
-                for (int i = 0; i < resultList.size(); i++) {
-                    System.out.println(resultList.get(i));//显示查找结果。
-                }
-            }
-        }else if (file.isFile()){
-            System.out.println("文件");
+        // 读取文本文件返回List
+        List<String> list = FileReAndWrUtil.readFileRetList(new File("C:\\Users\\Administrator\\Desktop\\gash-order-miss-fix.txt"), "UTF-8");
+        System.out.println(list.size());
+        for (String s:list) {
+            System.out.println(s);
         }
 
+
+
+//        // 递归查找文件
+//        String path = "C:\\Users\\Administrator\\Documents\\Tencent Files\\420964597\\FileRecv";
+//        String fileNameSuffix = ""; //可为空  *.CSV
+//        File file = new File(path);
+//        if (file.isDirectory()){
+//            List<String> resultList = new ArrayList();
+//            findFiles(path, fileNameSuffix, resultList);
+//            if (resultList.size() == 0) {
+//                System.out.println("No File Fount.");
+//            } else {
+//                System.out.println("fileCount: "+resultList.size());
+//                for (int i = 0; i < resultList.size(); i++) {
+//                    System.out.println(resultList.get(i));//显示查找结果。
+//                }
+//            }
+//        }else if (file.isFile()){
+//            System.out.println("文件");
+//        }
 
     }
 

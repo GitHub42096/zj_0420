@@ -190,7 +190,7 @@ public class InsertSql {
      */
     public static void exe(String path){
         // 导入文件
-        Set<String> set = FileReAndWrUtil.readFile(new File(path));
+        Set<String> set = FileReAndWrUtil.readFile(new File(path), "UTF-8");
         if (set == null){
             logger.error("getFileDataError->file:{}", path);
             return;

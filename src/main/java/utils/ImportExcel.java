@@ -242,7 +242,7 @@ class WDWUtil {
     public static void main(String[] args) {
         ImportExcel execl = new ImportExcel();
 //        Set<String> set = execl.read("C:\\Users\\Administrator\\Desktop\\超杀默示录0429（3804）(1).xlsx", 0);
-        Set<String> set = execl.read("C:\\Users\\Administrator\\Desktop\\201505.xls", 0);
+        Set<String> set = execl.read("C:\\Users\\Administrator\\Desktop\\工作簿1.xlsx", 0);
         System.out.println(set.size());
         Iterator<String> iterator = set.iterator();
         while (iterator.hasNext()) {
