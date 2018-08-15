@@ -1,5 +1,6 @@
 package utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,9 +59,39 @@ public class DateUtil {
         return Integer.parseInt(String.valueOf(between_days));
     }
 
+
+    /**
+     * 得到本月的最后一天
+     *
+     * @return
+     */
+    public static String getMonthLastDay() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar
+                .getActualMaximum(Calendar.DAY_OF_MONTH));
+        return dateFormat.format(calendar.getTime());
+    }
+
+    /**
+     * 得到本月的第一天
+     * @return
+     */
+    public static String getMonthFirstDay() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, calendar
+                .getActualMinimum(Calendar.DAY_OF_MONTH));
+
+        return dateFormat.format(calendar.getTime());
+    }
+
     public static void main(String[] args){
         System.out.println(DateUtil.getTimeStamp("2018-08-03 17:20:12", "yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateUtil.getTimeStamp2("2018-08-03 17:20:12", "yyyy-MM-dd HH:mm:ss"));
         System.out.println(System.currentTimeMillis()/1000); // 毫秒除以1000为秒
+
+        System.out.println(getMonthLastDay());
+        System.out.println(getMonthFirstDay());
     }
 }

@@ -5,6 +5,10 @@ import java.util.regex.Pattern;
 
 public class StringUtil {
 
+
+    static Pattern PHONE = Pattern.compile("^1[0-9]{10}$");
+//	static Pattern PHONE = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9])|(17[0-9]))\\d{8}$");
+
     /**
      * 返回交换后的字符串
      * @param str
@@ -41,10 +45,6 @@ public class StringUtil {
         return genRandomCode(6);
     }
 
-    public static void main(String[] args){
-    String s = getRandomPassword();
-    System.out.println(s);
-    }
 
     /**
      * 下划线转驼峰法
@@ -91,4 +91,29 @@ public class StringUtil {
         }
         return sb.toString();
     }
+
+    public static String delHtmlMark(String s){
+        if (s == null){
+            return "";
+        }
+        String res = s.replaceAll("\\&[a-zA-Z]{0,9};", "").replaceAll("<[^>]*>", " ");
+        return res;
+    }
+
+    // 是否是手机号
+    public static boolean isMobileNum(String mobileNum) {
+        if (mobileNum == null || mobileNum.length() == 0)
+            return false;
+        Matcher m = PHONE.matcher(mobileNum);
+        return m.matches();
+    }
+
+
+
+    public static void main(String[] args){
+        String s = getRandomPassword();
+        System.out.println(s);
+
+    }
+
 }
