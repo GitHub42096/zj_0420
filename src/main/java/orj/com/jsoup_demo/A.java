@@ -29,7 +29,9 @@ public class A {
 
 
         if (StringUtils.isNotBlank("511523199601186781")) {
+
             StringBuffer sbIdCard = new StringBuffer("");
+
             sbIdCard.append("511523199601186781");
             if (sbIdCard.length() > 14) {
                 sbIdCard.replace(0, 14, "**************");
