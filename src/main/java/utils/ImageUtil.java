@@ -4,6 +4,8 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /** 图片base64嘛相互转
  * @author liuzhenxing
@@ -66,11 +68,32 @@ public class ImageUtil {
     }
 
     /**
+          *通过图片base64流判断图片等于多少字节
+          *image 图片流
+          */
+        public static Integer imageSize(String image){
+         String str=image; // 1.需要计算文件流大小，首先把头部的data:image/png;base64,（注意有逗号）去掉。
+        Integer equalIndex= str.indexOf("=");//2.找到等号，把等号也去掉
+        if(str.indexOf("=")>0) {
+         str=str.substring(0, equalIndex);
+        }
+        Integer strLength=str.length();//3.原来的字符流大小，单位为字节
+         Integer size=strLength-(strLength/8)*2;//4.计算后得到的文件流大小，单位为字节
+         return size;
+         }
+
+
+    /**
      * 示例
      */
     public static void main(String[] args) {
-        String strImg = getImageStr("C:\\Users\\Administrator\\Desktop\\112.gif");
-        System.out.println(strImg);
-       // generateImage("4AAQSkZJRgABAgAAZABk", "C:\\Users\\Administrator\\Desktop\\113.jpg");
+        String strImg = getImageStr("C:\\Users\\admin\\Desktop\\a.png");
+        Set<String> set = new HashSet<String>();
+        set.add(strImg);
+        //FileReAndWrUtil.writeFile(new File("C:\\Users\\admin\\Desktop\\ab.txt"),set );
+        System.out.println(strImg.length());
+        System.out.println(imageSize(strImg));
+         generateImage(strImg,"C:\\Users\\admin\\Desktop\\113.png");
+
     }
 }
