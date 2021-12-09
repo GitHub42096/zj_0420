@@ -135,12 +135,12 @@ public class ScpUtils {
     }
 
     public static void main(String[] args) {
-        String host = "*****";
+        String host = "*******";
         int port = 22;
         String username = "root";
-        String password = "***";
+        String password = "*******";
 
         ScpUtils scpUtils = ScpUtils.getInstance(host, port, username, password);
-        scpUtils.putFile("C:\\Users\\admin\\Desktop\\技术.txt", "/usr/test");
+        scpUtils.putFile("/Users/xiezongwen/aaa.jar", "/u01");
     }
 }
